@@ -26,6 +26,7 @@ export const deleteUser = async (id: string) => {
 };
 export const logIn = async (email: string, password: string) => {
     const user = await User.findOne({ email });
+    
     if (!user) {
         throw new Error('Usuario no encontrado');
     }
@@ -33,8 +34,15 @@ export const logIn = async (email: string, password: string) => {
         throw new Error('Contraseña incorrecta');
     }
 
+    return {
+        userId: user._id.toString(),
+        name: user.name,
+        email: user.email
+    };
+
     return user; // Devuelve el usuario si las credenciales son correctas
 };
+
  
 export const ensureDefaultUser = async () => {
     try {
@@ -72,3 +80,22 @@ export const ensureDefaultUser = async () => {
         console.error('Error al verificar o crear el usuario predeterminado:', error);
     }
 };
+
+
+// funcion para cambiar contraseña de un usuario
+export const changePassword = async (userId: string, newPassword: string) => {
+    try {
+        const user = await User.findById(userId);
+        console.log(userId, newPassword);
+        console.log(user);
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        } 
+        user.password = newPassword;
+
+        await user.save();
+        return user;
+    } catch (error) {
+        throw new Error('Error al cambiar la contraseña: ');
+    }
+};      

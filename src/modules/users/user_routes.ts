@@ -7,7 +7,8 @@ import {
     getUserByIdHandler,
     updateUserHandler,
     deleteUserHandler,
-    logInHandler
+    logInHandler,
+    changePasswordHandler
 } from '../users/user_controller.js';
 
 const router = express.Router();
@@ -205,5 +206,7 @@ router.delete('/users/:id', deleteUserHandler);
  *         description: Credenciales incorrectas
  */
 router.post('/users/login', logInHandler);
+
+router.put('/users/:id/change-password', changePasswordHandler);
 
 export default router;
